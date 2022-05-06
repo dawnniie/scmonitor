@@ -22,6 +22,7 @@ wss.on('listening', () => {
     const disksIO = await si.disksIO()
     const fsSize = await si.fsSize()
     const networkStats = await si.networkStats()
+    const networkConnections = await si.networkConnections()
   
     const data = {
       v: 1,
@@ -64,6 +65,15 @@ wss.on('listening', () => {
         receive_sec: net.rx_sec,
         transfer: net.tx_bytes,
         receive: net.rx_bytes
+      })),
+      listeners: networkConnections.filter(c => c.state === 'LISTEN').map(lis => ({
+        protocol: lis.protocol,
+        address: lis.localAddress,
+        port: lis.localPort,
+        connections: networkConnections.filter(c => c.state === 'ESTABLISHED' && c.localPort === lis.localPort).map(con => ({
+          local: con.localAddress + ':' + con.localPort,
+          device: con.peerAddress
+        }))
       }))
     }
 
