@@ -11,7 +11,7 @@ const server = Bun.serve({
   port: 9678,
   fetch (req, server) {
     const url = new URL(req.url)
-    if (url.pathname === 'ws') {
+    if (url.pathname === '/ws') {
       server.upgrade(req)
       return
     }
