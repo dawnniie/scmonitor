@@ -1,0 +1,16 @@
+{
+  "name": "scmonitor",
+  "version": "1.1.0",
+  "description": "Tiny web API to provide server statistics",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "systeminformation": "^5.22.0"
+  }
+}
