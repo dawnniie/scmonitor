@@ -78,7 +78,7 @@ setInterval(async () => {
       receive: net.rx_bytes
     })),
     listeners: networkConnections.filter(c => c.state === 'LISTEN').map(lis => ({
-      protocol: lis.protocol,
+      net_protocol: lis.protocol,
       address: lis.localAddress,
       port: lis.localPort,
       connections: networkConnections.filter(c => c.state === 'ESTABLISHED' && c.localPort === lis.localPort).map(con => ({
