@@ -25,7 +25,7 @@ const server = Bun.serve({
   }
 })
 
-setInterval(async () => {
+async function loadStats () {
   const osInfo = await si.osInfo()
   const mem = await si.mem()
   const cpuTemperature = await si.cpuTemperature()
@@ -42,16 +42,15 @@ setInterval(async () => {
       total: mem.total,
       used: mem.used,
       active: mem.active,
-      swap: {
-        total: mem.swaptotal,
-        used: mem.swapused
-      }
+      swap_total: mem.swaptotal,
+      swap_used: mem.swapused
     },
     load: {
       current: currentLoad.currentLoad,
       user: currentLoad.currentLoadUser,
       system: currentLoad.currentLoadSystem,
-      temperature: cpuTemperature.max,
+      temp_avg: cpuTemperature.main,
+      temp_max: cpuTemperature.max,
       cpus: currentLoad.cpus.map(cpu => ({
         current: cpu.load,
         user: cpu.loadUser,
@@ -87,8 +86,13 @@ setInterval(async () => {
       }))
     }))
   })
+}
 
+await loadStats()
+
+setInterval(async () => {
+  await loadStats()
   server.publish('updates', data)
-}, 5000)
+}, 2500)
 
 console.log(`scmonitor listening on ${server.hostname}:${server.port}`)
